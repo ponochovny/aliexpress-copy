@@ -71,8 +71,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 const userStore = useUserStore()
-// @ts-ignore
-const user = useSupabaseUser()
+const user: any = useSupabaseUser()
 
 const contactName = ref(null)
 const address = ref(null)
