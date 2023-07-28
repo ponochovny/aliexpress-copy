@@ -30,7 +30,6 @@
 </template>
 
 <script lang="ts">
-import { client } from 'process'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -38,19 +37,21 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-// const client = useSupabaseClient()
-// const user = useSupabaseUser()
+const client = useSupabaseClient()
+const user = useSupabaseUser()
 
-// watchEffect(() => {
-// 	if (user.value) {
-// 		return navigateTo('/')
-// 	}
-// })
+watchEffect(() => {
+	if (user.value) {
+		return navigateTo('/')
+	}
+})
 
 const login = async (prov: 'google' | 'github') => {
-	alert(`Login with ${prov}`)
-	// 	const { data, error } = await client.auth.signInWithOAuth({
-	// 		provider: prov,
-	// 	})
+	const { data, error } = await client.auth.signInWithOAuth({
+		provider: prov,
+		options: {
+			redirectTo: window.location.origin,
+		},
+	})
 }
 </script>
