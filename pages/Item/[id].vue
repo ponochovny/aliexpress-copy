@@ -28,9 +28,11 @@
 					</div>
 				</div>
 				<div class="md:w-[60%] bg-white p-3 rounded-lg">
-					<div v-if="true">
-						<p class="mb-2">Title</p>
-						<p class="font-light text-[12px] mb-2">Description Section</p>
+					<div v-if="product && product.data">
+						<p class="mb-2">{{ product.data.title }}</p>
+						<p class="font-light text-[12px] mb-2">
+							{{ product.data.description }}
+						</p>
 					</div>
 
 					<div class="flex items-center pt-1.5">
@@ -76,7 +78,7 @@
 					<button
 						class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#FF851A] to-[#FFAC2C]"
 						:disabled="isInCart"
-						@click="addToCart()"
+						@click="addToCart"
 					>
 						<div v-if="isInCart">Is Added</div>
 						<div v-else>Add to Cart</div>
@@ -100,27 +102,34 @@ export default defineComponent({
 <script lang="ts" setup>
 const userStore = useUserStore()
 const route = useRoute()
+
+const product = ref<any>(null)
 const currentImage = ref<string | null>(null)
 
-onMounted(() => {
-	watchEffect(() => {
-		currentImage.value = 'https://picsum.photos/id/77/800/800'
-		images.value[0] = 'https://picsum.photos/id/77/800/800'
-	})
+onBeforeMount(async () => {
+	product.value = await useFetch(
+		`/api/prisma/get-product-by-id/${route.params.id}`
+	)
+})
+
+watchEffect(() => {
+	if (product.value && product.value.data) {
+		currentImage.value = product.value.data.url
+		images.value[0] = product.value.data.url
+		userStore.isLoading = false
+	}
 })
 
 const isInCart = computed(() => {
-	let res = false
-	userStore.cart.forEach((prod: any) => {
-		if (route.params.id === prod.id) {
-			res = true
-		}
-	})
+	const res = userStore.cart.some((prod: any) => +route.params.id === prod.id)
 	return res
 })
 
 const priceComputed = computed(() => {
-	return '26.40'
+	if (product.value && product.value.data) {
+		return product.value.data.price / 100
+	}
+	return '0.00'
 })
 
 const images = ref([
@@ -133,6 +142,6 @@ const images = ref([
 ])
 
 const addToCart = () => {
-	alert('ADDED')
+	userStore.cart.push(product.value.data)
 }
 </script>
