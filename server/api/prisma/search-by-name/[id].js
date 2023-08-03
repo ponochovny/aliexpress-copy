@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 		take: 5, // Max rows
 		where: {
 			title: {
-				contains: event.context.params,
+				contains: event.context.params.id,
 				mode: 'insensitive',
 			},
 		},
