@@ -196,7 +196,8 @@ const items = ref<any>(null)
 const signout = async () => {
 	console.log('signout')
 	debugger
-	await client.auth.signOut()
+	const { error: errorClient } = await client.auth.signOut()
+	if (errorClient) console.log(errorClient)
 	debugger
 	const { error } = await clientAuth.auth.signOut()
 	debugger
