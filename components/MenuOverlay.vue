@@ -77,6 +77,7 @@ export default defineComponent({
 <script lang="ts" setup>
 const userStore = useUserStore()
 
+const client = useSupabaseClient()
 const clientAuth = useSupabaseAuthClient()
 const user = useSupabaseUser()
 
@@ -86,6 +87,7 @@ const goTo = (url: string) => {
 }
 
 const signOut = async () => {
+	client.auth.signOut()
 	const { error } = await clientAuth.auth.signOut()
 	if (error) console.log(error)
 	user.value = null
