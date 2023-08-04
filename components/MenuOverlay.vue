@@ -87,7 +87,7 @@ const goTo = (url: string) => {
 }
 
 const signOut = async () => {
-	client.auth.signOut()
+	await client.auth.signOut()
 	const { error } = await clientAuth.auth.signOut()
 	if (error) console.log(error)
 	user.value = null

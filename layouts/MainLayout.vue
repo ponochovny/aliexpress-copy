@@ -194,7 +194,7 @@ const searchItem = ref('')
 const items = ref<any>(null)
 
 const signout = async () => {
-	client.auth.signOut()
+	await client.auth.signOut()
 	const { error } = await clientAuth.auth.signOut()
 	if (error) console.log(error)
 	user.value = null
