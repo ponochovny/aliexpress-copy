@@ -183,18 +183,18 @@ export default defineComponent({
 <script lang="ts" setup>
 const userStore = useUserStore()
 
-const client = useSupabaseClient()
+const clientAuth = useSupabaseAuthClient()
 const user = useSupabaseUser()
 
 const isAccountMenu = ref(false)
 const isCartHover = ref(false)
-const isSearching = ref(true)
+const isSearching = ref(false)
 const searchItem = ref('')
 const items = ref<any>(null)
 
 const signout = async () => {
-	const { error } = await client.auth.signOut()
-	if (error) throw error
+	const { error } = await clientAuth.auth.signOut()
+	if (error) console.log(error)
 	user.value = null
 }
 
@@ -211,8 +211,8 @@ watch(
 			setTimeout(() => {
 				items.value = ''
 				isSearching.value = false
-				return
 			}, 500)
+			return
 		}
 		searchByName()
 	}
