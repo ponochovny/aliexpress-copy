@@ -194,10 +194,13 @@ const searchItem = ref('')
 const items = ref<any>(null)
 
 const signout = async () => {
+	console.log('signout')
 	await client.auth.signOut()
 	const { error } = await clientAuth.auth.signOut()
 	if (error) console.log(error)
+	console.log(user.value)
 	user.value = null
+	console.log(user.value)
 }
 
 const searchByName = useDebounce(async () => {
