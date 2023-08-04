@@ -195,11 +195,17 @@ const items = ref<any>(null)
 
 const signout = async () => {
 	console.log('signout')
+	debugger
 	await client.auth.signOut()
+	debugger
 	const { error } = await clientAuth.auth.signOut()
+	debugger
 	if (error) console.log(error)
+	debugger
 	console.log(user.value)
+	debugger
 	user.value = null
+	debugger
 	console.log(user.value)
 }
 
